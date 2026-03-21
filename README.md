@@ -44,6 +44,14 @@ Better Init is opinionated in a few important ways:
 - **Planning support only when useful**: use planning files for non-trivial setups, not for every bootstrap
 - **Draft first**: never write files before showing the proposed structure and asking for approval
 
+## Prerequisite
+
+Before using Better Init, install the `planning-with-files` skill:
+
+- Repo: https://github.com/OthmanAdi/planning-with-files
+
+Better Init is designed to work with it for non-trivial project initialization flows.
+
 ## Installation
 
 Copy the `better-init` folder into your personal Claude skills directory:
@@ -93,23 +101,40 @@ A good Better Init run usually ends with:
 - no invented commands or boilerplate
 - clear confirmation before any files are written
 
-## Repository structure
+## Expected project structure
+
+After using Better Init, a project will usually end up with something like this:
 
 ```text
-Better-Init/
-├── README.md
-├── LICENSE
-└── better-init/
-    └── SKILL.md
+your-project/
+├── CLAUDE.md
+├── task_plan.md
+├── findings.md
+├── progress.md
+└── doc/
+    ├── background.md
+    ├── architecture.md
+    ├── dataset.md
+    └── workflow.md
 ```
 
-## Install target
+The exact files depend on the project.
 
-The skill should end up at:
+For example:
+- coding projects may lean toward `architecture.md`, `domain-boundaries.md`, or `verification.md`
+- research projects may lean toward `background.md`, `dataset.md`, `experiments.md`, or `literature.md`
+- mixed workspaces may use a smaller hybrid set
 
-```text
-~/.claude/skills/better-init/SKILL.md
-```
+The planning files come from `planning-with-files`:
+- `task_plan.md`
+- `findings.md`
+- `progress.md`
+
+The important idea is simple:
+- `CLAUDE.md` stays short and operational
+- detailed, durable context lives in separate markdown files
+- planning files track non-trivial setup work across sessions
+- Claude gets clearer project guidance with less clutter
 
 ## Acknowledgement
 Part of the idea is from @Tw93: https://x.com/HiTw93/status/2032091246588518683
