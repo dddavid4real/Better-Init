@@ -1,4 +1,4 @@
-# Better Init
+# Better Init for Claude Code
 
 A Claude Code skill for bootstrapping a new project folder with the right long-lived context.
 
@@ -55,12 +55,6 @@ Better Init is designed to work with it for non-trivial project initialization f
 ## Installation
 
 Copy the `better-init` folder into your personal Claude skills directory:
-
-```bash
-cp -R better-init ~/.claude/skills/
-```
-
-If you cloned this repository first:
 
 ```bash
 git clone https://github.com/dddavid4real/Better-Init.git
