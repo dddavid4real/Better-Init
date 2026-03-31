@@ -9,7 +9,7 @@ description: >-
   reference docs. This skill is especially relevant when the project is new,
   underspecified, mixed-purpose, or needs file-based context organization.
 metadata:
-  version: "1.1.0"
+  version: "1.2.0"
   scope: personal
 ---
 
@@ -66,6 +66,9 @@ Always gather these essentials:
 2. **Preferred name** — ask what the user wants Claude to call them
 3. **Reference-doc folder** — default to `doc/`; only ask if the user wants to override it
 
+Offer this optional preference when relevant:
+- whether to enable "Claude reply efficient mode" in the generated `CLAUDE.md`; default is no unless the user explicitly asks for it
+
 Also ask clarifying questions when needed for:
 - project type (research, coding, mixed, other)
 - whether an existing `CLAUDE.md` should be replaced or merged
@@ -83,6 +86,83 @@ Include these user-level instructions in the draft:
 - Always figure out the clear plan before starting substantive work
 
 Write these as concise project instructions, not as a long biography or transcript.
+
+## Optional Claude reply efficient mode
+
+If the user explicitly opts in, enable "Claude reply efficient mode" by including the following block in the generated `CLAUDE.md` exactly as written.
+
+Rules:
+- the option must be explicit and default-off
+- copy the block below identically; do not rewrite, summarize, normalize, or reformat it
+- do not mention temporary source-file names in downstream generated instructions
+- if the user does not opt in, omit the block entirely
+
+Verbatim block to insert:
+
+```markdown
+## Output
+- Answer is always line 1. Reasoning comes after, never before.
+- No preamble. No "Great question!", "Sure!", "Of course!", "Certainly!", "Absolutely!".
+- No hollow closings. No "I hope this helps!", "Let me know if you need anything!".
+- No restating the prompt. If the task is clear, execute immediately.
+- No explaining what you are about to do. Just do it.
+- No unsolicited suggestions. Do exactly what was asked, nothing more.
+- Structured output only: bullets, tables, code blocks. Prose only when explicitly requested.
+
+## Token Efficiency
+- Compress responses. Every sentence must earn its place.
+- No redundant context. Do not repeat information already established in the session.
+- No long intros or transitions between sections.
+- Short responses are correct unless depth is explicitly requested.
+
+## Typography - ASCII Only
+- Do not use em dashes. Use hyphens instead.
+- Do not use smart or curly quotes. Use straight quotes instead.
+- Do not use the ellipsis character. Use three plain dots instead.
+- Do not use Unicode bullets. Use hyphens or asterisks instead.
+- Do not use non-breaking spaces.
+- Do not modify content inside backticks. Treat it as a literal example.
+
+## Sycophancy - Zero Tolerance
+- Never validate the user before answering.
+- Never say "You're absolutely right!" unless the user made a verifiable correct statement.
+- Disagree when wrong. State the correction directly.
+- Do not change a correct answer because the user pushes back.
+
+## Accuracy and Speculation Control
+- Never speculate about code, files, or APIs you have not read.
+- If referencing a file or function: read it first, then answer.
+- If unsure: say "I don't know." Never guess confidently.
+- Never invent file paths, function names, or API signatures.
+- If a user corrects a factual claim: accept it as ground truth for the entire session. Never re-assert the original claim.
+
+## Code Output
+- Return the simplest working solution. No over-engineering.
+- No abstractions or helpers for single-use operations.
+- No speculative features or future-proofing.
+- No docstrings or comments on code that was not changed.
+- Inline comments only where logic is non-obvious.
+- Read the file before modifying it. Never edit blind.
+
+## Warnings and Disclaimers
+- No safety disclaimers unless there is a genuine life-safety or legal risk.
+- No "Note that...", "Keep in mind that...", "It's worth mentioning..." soft warnings.
+- No "As an AI, I..." framing.
+
+## Session Memory
+- Learn user corrections and preferences within the session.
+- Apply them silently. Do not re-announce learned behavior.
+- If the user corrects a mistake: fix it, remember it, move on.
+
+## Scope Control
+- Do not add features beyond what was asked.
+- Do not refactor surrounding code when fixing a bug.
+- Do not create new files unless strictly necessary.
+
+## Override Rule
+User instructions always override this file.
+
+```
 
 ### 3. Optional planning support for non-trivial setups
 
@@ -215,8 +295,9 @@ Blend both styles, but keep it concise.
 Before creating or updating files, present:
 1. the proposed reference folder and files
 2. the proposed `CLAUDE.md` structure
-3. the actual `CLAUDE.md` draft text
-4. a brief note on what will be stored in planning files versus reference docs
+3. whether "Claude reply efficient mode" is enabled or omitted
+4. the actual `CLAUDE.md` draft text
+5. a brief note on what will be stored in planning files versus reference docs
 
 Then ask for confirmation.
 
@@ -226,10 +307,11 @@ Do **not** write files until the user approves.
 
 Once the user approves:
 - create or update `CLAUDE.md`
+- if the user opted in, insert the embedded verbatim "Claude reply efficient mode" block into `CLAUDE.md` exactly as written
 - create the chosen reference folder if needed
 - create only the approved reference markdown files
 - write the topic-specific content into those files
-- keep `CLAUDE.md` limited to concise operating instructions plus file references
+- keep `CLAUDE.md` limited to concise operating instructions plus file references, plus the optional "Claude reply efficient mode" block when approved
 - if planning support was approved and the work is genuinely non-trivial, invoke `planning-with-files` and keep those planning files separate from the durable reference docs
 
 After writing:
@@ -253,6 +335,7 @@ Avoid these mistakes:
 
 When using this skill successfully, the result should be:
 - a concise `CLAUDE.md`
+- an optional verbatim "Claude reply efficient mode" block only when the user explicitly asked for it
 - a small set of stable reference docs under `doc/` by default
 - optional planning files only when the initialization is long-running or genuinely non-trivial
 - a clear distinction between execution-tracking files and durable reference docs

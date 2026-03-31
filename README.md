@@ -6,6 +6,7 @@ Instead of stuffing everything into `CLAUDE.md`, **Better Init** helps Claude cr
 - a concise, project-specific `CLAUDE.md`
 - a small set of durable reference docs under `doc/` by default
 - an approval-first setup flow that drafts before writing files
+- an optional verbatim instruction block for token-efficient answering style when the user explicitly chooses it
 
 ## What the skill does
 
@@ -39,8 +40,9 @@ Typical examples:
 Better Init is opinionated in a few important ways:
 - **Minimal intake**: reuse what the user already said and ask only for missing essentials
 - **User preferences preserved**: include the user's preferred name and core working rules in the drafted `CLAUDE.md`
+- **Claude reply efficient mode**: include the full reply-efficiency block only when the user explicitly chooses it
 - **`doc/` by default**: use `doc/` for durable references unless the user wants another folder
-- **Concise `CLAUDE.md`**: keep it focused on durable instructions and file references
+- **Concise `CLAUDE.md`**: keep it focused on durable instructions and file references unless the user opts into the extra verbatim block
 - **Planning support only when useful**: use planning files for non-trivial setups, not for every bootstrap
 - **Draft first**: never write files before showing the proposed structure and asking for approval
 
@@ -51,6 +53,15 @@ Before using Better Init, install the `planning-with-files` skill:
 - Repo: https://github.com/OthmanAdi/planning-with-files
 
 Better Init is designed to work with it for non-trivial project initialization flows.
+
+## Claude reply efficient mode
+
+Better Init can optionally enable "Claude reply efficient mode" inside the generated `CLAUDE.md`.
+
+- This option is off by default.
+- The block is included only when the user explicitly chooses it.
+- When included, the contents are copied identically.
+- Downstream generated instructions should not mention temporary source-file names.
 
 ## Installation
 
@@ -86,10 +97,16 @@ Or provide a little context up front:
 /better-init this folder has papers, scripts, and notes; draft the structure first
 ```
 
+```text
+/better-init set up this repo and enable Claude reply efficient mode
+```
+
 ## What a successful run should produce
 
 A good Better Init run usually ends with:
 - a concise `CLAUDE.md`
+- an optional verbatim "Claude reply efficient mode" block only when the user explicitly asked for it
+- no temporary source-file naming leaked into downstream project instructions
 - a small, useful set of reference docs under `doc/`
 - project instructions that match the real folder contents
 - no invented commands or boilerplate
@@ -125,13 +142,16 @@ The planning files come from `planning-with-files`:
 - `progress.md`
 
 The important idea is simple:
-- `CLAUDE.md` stays short and operational
+- `CLAUDE.md` stays short and operational by default
+- the optional "Claude reply efficient mode" content is included only when the user explicitly wants it
 - detailed, durable context lives in separate markdown files
 - planning files track non-trivial setup work across sessions
 - Claude gets clearer project guidance with less clutter
 
 ## Acknowledgement
 Part of the idea is from @Tw93: https://x.com/HiTw93/status/2032091246588518683
+
+The verbatim contents used for the optional "Claude reply efficient mode" came from https://github.com/drona23/claude-token-efficient.
 
 ## License
 
